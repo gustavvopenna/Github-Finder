@@ -16,7 +16,11 @@ class GithubService {
 
   getUsers = () => {
     return this.service
-      .get('/users')
+      .get(
+        `/users?client_id=${
+          process.env.REACT_APP_GITHUB_CLIENT_ID
+        }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
       .then(users => users)
       .catch(err => err)
   }

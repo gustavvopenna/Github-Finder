@@ -13,9 +13,9 @@ class App extends Component {
   }
   async componentDidMount() {
     this.setState({ loading: true })
-    const getUsers = await service.getUsers()
+    const res = await service.getUsers()
 
-    this.setState({ users: getUsers.data, loading: false })
+    this.setState({ users: res.data, loading: false })
   }
 
   render() {
