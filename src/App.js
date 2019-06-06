@@ -7,11 +7,15 @@ import GithubService from './services/index'
 const service = new GithubService()
 
 class App extends Component {
-  componentDidMount() {
-    service
-      .getUsers()
-      .then(({ data }) => console.log(data))
-      .catch(err => console.log(err))
+  state = {
+    users: [],
+    loading: false
+  }
+  async componentDidMount() {
+    this.setState({ loading: true })
+    const getUsers = await service.getUsers()
+
+    this.setState({ users: getUsers.data, loading: false })
   }
 
   render() {
@@ -19,7 +23,7 @@ class App extends Component {
       <div className="App">
         <Navbar />
         <div className="container">
-          <Users />
+          <Users users={this.state.users} loading={this.state.loading} />
         </div>
       </div>
     )
