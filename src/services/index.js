@@ -24,6 +24,17 @@ class GithubService {
       .then(users => users)
       .catch(err => err)
   }
+
+  getFilteredUsers = text => {
+    return this.service
+      .get(
+        `/search/users?q=${text}&client_id=${
+          process.env.REACT_APP_GITHUB_CLIENT_ID
+        }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
+      .then(users => users)
+      .catch(err => err)
+  }
 }
 
 export default GithubService
