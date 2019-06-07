@@ -3,6 +3,7 @@ import './App.css'
 import Navbar from './components/layout/Navbar'
 import Users from './components/users/Users'
 import Search from './components/users/Search'
+import Alert from './components/layout/Alert'
 import GithubService from './services/index'
 
 const service = new GithubService()
@@ -10,17 +11,19 @@ const service = new GithubService()
 class App extends Component {
   state = {
     users: [],
-    loading: false
-  }
-
-  async componentDidMount() {
-    this.setState({ loading: true })
-    const res = await service.getUsers()
-
-    this.setState({ users: res.data, loading: false })
+    loading: false,
+    alert: null
   }
 
   //Search Github users
+  // async componentDidMount() {
+  //   this.setState({ loading: true })
+  //   const res = await service.getUsers()
+
+  //   this.setState({ users: res.data, loading: false })
+  // }
+
+  //Search Github users filtered by username
   searchUsers = async text => {
     this.setState({ loading: true })
     try {
@@ -36,12 +39,30 @@ class App extends Component {
     }
   }
 
+  //Clear users from State
+  clearUsers = () => this.setState({ users: [], loading: false })
+
+  //Set Alert when user does not enter somethig in the search input
+  setAlert = (msg, type) => {
+    this.setState({ alert: { msg, type } })
+
+    setTimeout(() => {
+      this.setState({ alert: null })
+    }, 3000)
+  }
+
   render() {
     return (
       <div className="App">
         <Navbar />
         <div className="container">
-          <Search searchUsers={this.searchUsers} />
+          <Alert alert={this.state.alert} />
+          <Search
+            searchUsers={this.searchUsers}
+            clearUsers={this.clearUsers}
+            showClear={this.state.users.length > 0 ? true : false}
+            setAlert={this.setAlert}
+          />
           <Users users={this.state.users} loading={this.state.loading} />
         </div>
       </div>
