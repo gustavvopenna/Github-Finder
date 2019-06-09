@@ -2,10 +2,6 @@ import axios from 'axios'
 
 const baseURL = 'https://api.github.com'
 
-// this.service = axios.create({
-//   baseURL,
-//   withCredentials: true
-// })
 class GithubService {
   constructor() {
     this.service = axios.create({
@@ -29,6 +25,18 @@ class GithubService {
     return this.service
       .get(
         `/search/users?q=${text}&client_id=${
+          process.env.REACT_APP_GITHUB_CLIENT_ID
+        }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
+      .then(users => users)
+      .catch(err => err)
+  }
+
+  //Get a single user
+  getUser = username => {
+    return this.service
+      .get(
+        `/users/${username}?client_id=${
           process.env.REACT_APP_GITHUB_CLIENT_ID
         }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
       )
