@@ -6,6 +6,7 @@ import Users from './components/users/Users'
 import Search from './components/users/Search'
 import Alert from './components/layout/Alert'
 import About from './components/pages/About'
+import User from './components/users/User'
 import GithubService from './services/index'
 
 const service = new GithubService()
@@ -13,6 +14,7 @@ const service = new GithubService()
 class App extends Component {
   state = {
     users: [],
+    user: {},
     loading: false,
     alert: null
   }
@@ -34,6 +36,21 @@ class App extends Component {
         data: { items }
       } = res
       this.setState({ users: items, loading: false })
+    } catch (err) {
+      this.setState({ loading: false })
+      console.log(err)
+      //Add toaster to give feedback to user
+    }
+  }
+
+  //Get a single Github user
+  oneUser = async username => {
+    this.setState({ loading: true })
+    try {
+      const res = await service.getUser(username)
+      const { data } = res
+      this.setState({ user: data, loading: false })
+      console.log(this.state.user)
     } catch (err) {
       this.setState({ loading: false })
       console.log(err)
@@ -78,6 +95,18 @@ class App extends Component {
                 )}
               />
               <Route exact path="/about" component={About} />
+              <Route
+                exact
+                path="/:login"
+                render={props => (
+                  <User
+                    {...props}
+                    oneUser={this.oneUser}
+                    loading={this.state.loading}
+                    user={this.state.user}
+                  />
+                )}
+              />
             </Switch>
           </div>
         </div>
