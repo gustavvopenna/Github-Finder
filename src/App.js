@@ -15,6 +15,7 @@ class App extends Component {
   state = {
     users: [],
     user: {},
+    repos: [],
     loading: false,
     alert: null
   }
@@ -50,7 +51,19 @@ class App extends Component {
       const res = await service.getUser(username)
       const { data } = res
       this.setState({ user: data, loading: false })
-      console.log(this.state.user)
+    } catch (err) {
+      this.setState({ loading: false })
+      console.log(err)
+      //Add toaster to give feedback to user
+    }
+  }
+
+  oneUserRepos = async username => {
+    this.setState({ loading: true })
+    try {
+      const res = await service.getUserRepos(username)
+      const { data } = res
+      this.setState({ repos: data, loading: false })
     } catch (err) {
       this.setState({ loading: false })
       console.log(err)
@@ -69,12 +82,13 @@ class App extends Component {
   }
 
   render() {
+    const { users, user, alert, loading, repos } = this.state
     return (
       <Router>
         <div className="App">
           <Navbar />
           <div className="container">
-            <Alert alert={this.state.alert} />
+            <Alert alert={alert} />
             <Switch>
               <Route
                 exact
@@ -84,13 +98,10 @@ class App extends Component {
                     <Search
                       searchUsers={this.searchUsers}
                       clearUsers={this.clearUsers}
-                      showClear={this.state.users.length > 0 ? true : false}
+                      showClear={users.length > 0 ? true : false}
                       setAlert={this.setAlert}
                     />
-                    <Users
-                      users={this.state.users}
-                      loading={this.state.loading}
-                    />
+                    <Users users={users} loading={loading} />
                   </Fragment>
                 )}
               />
@@ -102,8 +113,10 @@ class App extends Component {
                   <User
                     {...props}
                     oneUser={this.oneUser}
-                    loading={this.state.loading}
-                    user={this.state.user}
+                    user={user}
+                    loading={loading}
+                    oneUserRepos={this.oneUserRepos}
+                    repos={repos}
                   />
                 )}
               />
