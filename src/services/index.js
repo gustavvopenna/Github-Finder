@@ -43,6 +43,18 @@ class GithubService {
       .then(users => users)
       .catch(err => err)
   }
+
+  //Get repos from one user
+  getUserRepos = username => {
+    return this.service
+      .get(
+        `/users/${username}/repos?per_page=5&sort=created:asc&client_id=${
+          process.env.REACT_APP_GITHUB_CLIENT_ID
+        }&client_secret=${process.env.REACT_APP_GITHUB_CLIENT_SECRET}`
+      )
+      .then(repos => repos)
+      .catch(err => err)
+  }
 }
 
 export default GithubService
