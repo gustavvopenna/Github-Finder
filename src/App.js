@@ -47,12 +47,6 @@ const App = () => {
     }
   }
 
-  //Clear users from State
-  const clearUsers = () => {
-    setUsers([])
-    setLoading(false)
-  }
-
   //Set Alert when user does not enter somethig in the search input
   const showAlert = (msg, type) => {
     setAlert({ msg, type })
@@ -72,11 +66,7 @@ const App = () => {
                 path="/"
                 render={props => (
                   <Fragment>
-                    <Search
-                      clearUsers={clearUsers}
-                      showClear={users.length > 0 ? true : false}
-                      setAlert={showAlert}
-                    />
+                    <Search setAlert={showAlert} />
                     <Users />
                   </Fragment>
                 )}
