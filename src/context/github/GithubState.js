@@ -35,8 +35,29 @@ const GithubState = props => {
   }
 
   //get user
+  //Get a single Github user
+  const oneUser = async username => {
+    setLoading()
+
+    const res = await service.getUser(username)
+    const { data } = res
+
+    dispatch({
+      type: GET_USER,
+      payload: data
+    })
+  }
 
   //get repos
+  const oneUserRepos = async username => {
+    setLoading()
+    const res = await service.getUserRepos(username)
+
+    dispatch({
+      type: GET_REPOS,
+      payload: res.data
+    })
+  }
 
   //clear users
   //Clear users from State
@@ -54,7 +75,9 @@ const GithubState = props => {
         repos: state.repos,
         loading: state.loading,
         searchUsers,
-        clearUsers
+        clearUsers,
+        oneUser,
+        oneUserRepos
       }}
     >
       {props.children}
