@@ -64,7 +64,6 @@ const GithubState = props => {
   const clearUsers = () => dispatch({ type: CLEAR_USERS })
 
   //set loading
-
   const setLoading = () => dispatch({ type: SET_LOADING })
 
   return (
