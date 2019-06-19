@@ -3,9 +3,6 @@ import AlertContext from './alertContext'
 import AlertReducer from './alertReducer'
 import { SET_ALERT, REMOVE_ALERT } from '../types'
 
-import GithubService from '../../services/index'
-const service = new GithubService()
-
 const AlertState = props => {
   const initialState = null
 

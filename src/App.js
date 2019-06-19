@@ -1,4 +1,4 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment } from 'react'
 import './App.css'
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Navbar from './components/layout/Navbar'
@@ -12,8 +12,6 @@ import GithubState from './context/github/GithubState'
 import AlertState from './context/alert/AlertState'
 
 const App = () => {
-  const [alert, setAlert] = useState(null)
-
   return (
     <GithubState>
       <AlertState>
